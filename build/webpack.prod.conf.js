@@ -33,7 +33,15 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   optimization: {
+    //取代 new UglifyJsPlugin
     minimize: true,
+    // 识别package.json中的sideEffects以剔除无用的模块，用来做tree-shake
+    // 依赖于optimization.providedExports和optimization.usedExports
+    sideEffects: true,
+    // 取代 new webpack.optimize.ModuleConcatenationPlugin()
+    concatenateModules: true,
+    // 取代 new webpack.NoEmitOnErrorsPlugin()，编译错误时不打印输出资源。
+    noEmitOnErrors: true,
     splitChunks: {
       cacheGroups: {
         vendors: {
@@ -58,9 +66,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       allChunks: true,
     }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    // new webpack.DefinePlugin({
-    //   'process.env': env
-    // }),
+    new webpack.DefinePlugin({
+      'process.env': env
+    }),
     // new UglifyJsPlugin({
     //   uglifyOptions: {
     //     compress: {
