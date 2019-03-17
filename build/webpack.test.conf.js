@@ -5,8 +5,9 @@ const utils = require('./utils')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
-
+const { VueLoaderPlugin } = require('vue-loader')
 const webpackConfig = merge(baseWebpackConfig, {
+  mode: 'development',
   // use inline sourcemap for karma-sourcemap-loader
   module: {
     rules: utils.styleLoaders()
@@ -20,6 +21,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
+    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': require('../config/test.env')
     })
